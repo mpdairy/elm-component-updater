@@ -1,0 +1,14 @@
+{
+    "version": "0.0.1",
+    "summary": "Easily interface and organize nested components.",
+    "repository": "https://github.com/mpdairy/elm-component-updater.git",
+    "license": "UNLICENSED",
+    "source-directories": [
+        "src"
+    ],
+    "exposed-modules": ["Updater"],
+    "dependencies": {
+        "elm-lang/core": "4.0.5 <= v < 5.0.0"
+    },
+    "elm-version": "0.17.1 <= v < 0.18.0"
+}
