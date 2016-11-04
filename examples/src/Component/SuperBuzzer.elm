@@ -3,7 +3,7 @@ module Component.SuperBuzzer exposing (Msg (..), Model, initModel, update, view)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.App as Html
---import Html.Events exposing ( onClick, onInput )
+import Html.Events exposing ( onClick )
 import Time exposing (Time, every, millisecond, second)
 import Updater exposing (toCmd)
 
@@ -54,8 +54,9 @@ view model =
     div [ style [ ("width", px model.maxWidth)
                 , ("height", px model.maxHeight)
                 , ("padding-top", px <|
-                       ((100 - model.percent) / 100 * model.maxHeight) / 2)] ]
-        [ div [ style [ ("background-color", "red")
+                       ((100 - model.percent) / 100 * model.maxHeight) / 2)]
+        , onClick Stop ]
+        [ div [ style [ ("background-color", if model.buzzing then "red" else "white")
                       , ("width", percent model.percent)
                       , ("height", percent model.percent)
                       , ("margin", "auto auto") ] ]
