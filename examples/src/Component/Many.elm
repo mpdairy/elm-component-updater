@@ -7,7 +7,6 @@ import List
 
 import Updater exposing (converter, Updater, Converter, Interface, toCmd, noReaction)
 
-
 type alias Model cModel cMsg =
     { objects : Dict Int cModel
     , newID : Int
@@ -20,7 +19,8 @@ type alias Model cModel cMsg =
 
 type Msg cModel cMsg = Add (cModel, Cmd cMsg)
                      | Delete Int
-                     | Passing Int cMsg cModel
+                     | From Int cMsg cModel
+                     | SendTo Int cMsg
                      | UpdaterMsg (Updater (Model cModel cMsg) (Msg cModel cMsg))
 
 objectC : (cMsg -> cModel -> (cModel, Cmd cMsg)) -> Int
@@ -34,7 +34,7 @@ objectC objUpdate n =
                      { model | objects = newObjects
                      , viewAll = mapper objUpdate newObjects} )
         , update = objUpdate
-        , react = (\ cMsg cModel model -> model ! [ toCmd <| Passing n cMsg cModel ] ) }
+        , react = (\ cMsg cModel model -> model ! [ toCmd <| From n cMsg cModel ] ) }
 --
 mapper : ( cMsg -> cModel -> ( cModel, Cmd cMsg ))
        -> Dict Int cModel
@@ -76,7 +76,9 @@ update msg model =
           , viewAll = mapper model.objUpdate newObjects } ! []
 
       --Passes object messages along to parent
-      Passing id cMsg cModel -> model ! []
+      From id cMsg cModel -> model ! []
+
+      SendTo id cMsg -> model ! [ Cmd.map (objectC model.objUpdate id) <| toCmd cMsg ]
 
       UpdaterMsg u -> u model
 

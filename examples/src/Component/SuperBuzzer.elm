@@ -1,4 +1,4 @@
-module Component.SuperBuzzer exposing (Msg (..), Model, initModel, update, view)
+module Component.SuperBuzzer exposing (Msg (..), Model, initModel, update, view, subscriptions)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -59,7 +59,7 @@ view model =
         [ div [ style [ ("background-color", if model.buzzing then "red" else "white")
                       , ("width", percent model.percent)
                       , ("height", percent model.percent)
-                      , ("margin", "auto auto") ] ]
+                      , ("margin", "auto auto")] ]
               [] ]
 
 px : Float -> String
