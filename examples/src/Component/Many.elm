@@ -1,4 +1,4 @@
-module Component.Many exposing (Msg (..), Model, initModel, update, subscriptions)
+module Component.Many exposing (Msg (Add, Delete, From, SendTo), Model, initModel, update, subscriptions)
 
 import Html exposing (Html)
 import Html.App as Html

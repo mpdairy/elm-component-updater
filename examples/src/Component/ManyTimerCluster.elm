@@ -1,13 +1,13 @@
-module Component.ManualTimerCluster exposing (Msg (..), Model, init, update, view, subscriptions)
+module Component.ManyTimerCluster exposing (Msg (..), Model, init, update, view, subscriptions)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.App as Html
 import Html.Events exposing ( onClick )
+import Updater exposing (converter, Updater, Converter, Interface, toCmd, noReaction)
 
 import Component.TaskTimer as TaskTimer
 import Component.Many as Many
 
-import Updater exposing (converter, Updater, Converter, Interface, toCmd, noReaction)
 
 type alias TimersModel = Many.Model TaskTimer.Model TaskTimer.Msg
 
@@ -44,7 +44,7 @@ update msg model =
 -- SUBSCRIPTIONS
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.batch [ Sub.map timersC <| Many.subscriptions model.timers ]
+    Sub.map timersC <| Many.subscriptions model.timers
 
 -- VIEW
 view : Model -> Html Msg

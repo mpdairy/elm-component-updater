@@ -38,7 +38,7 @@ you just need to declare an `Interface` with the following information:
 * `get` - how to get the child component's model from the parent model.
 * `set` - how to update the child component's model within the parent model.
 * `update` - the child component's standard `update` function.
-* `react` - (optional) lets the parent react to any of the children's messages.
+* `react` - (optional) lets the parent react to any of the child's messages.
 
 Once defined, a `Converter` can be used with `Html.map`, `Sub.map`, or
 `Cmd.map` to convert any `Html`, `Sub`, or `Cmd` containing the child
@@ -50,29 +50,29 @@ It should encourage the creation and sharing of re-usable, decoupled,
 components.
 It also allows for some really nice abstractions, like the `Many`
 component (shown as in examples far below), which lets you easily
-create and display a collection of any component, without having to worry about the
-underlying implementation.
+create and display a collection of any component.
 
 # Examples
 
-### Prelude
+### The Stock Modules
 
-There will be three stock components that we use to build up more
+There are three stock components that we'll use to build up more
 complicated components:
 
 * `EditableLabel` is a label that can be changed with an edit button
 (demo, source)
 * `Timer` is a standard kitchen timer that counts down from whatever
   you set and flashes when it reaches zero (demo, source)
-* `SuperBuzzer` is just a bigger, animated "buzzer" that really grabs
+* `SuperBuzzer` is just a big, animated "buzzer" that really grabs
 your attention (demo, source)
+
+The modules, and the modules to come, are, admittedly, hideous in appearance.
 
 ## TaskTimer
 
 A `TaskTimer` is just a kitchen timer with a task name and
 description. The idea is that later we will use many of them to make a
-timed todo list. We'll also make each `TaskTimer` display the number of times it has
-buzzed.
+timed todo list.
 
 First, the module name and imports:
 
@@ -90,7 +90,8 @@ import Component.EditableLabel as Label
 #### Model
 
 For the `Model`, we'll include the `Timer`, two `Label`s, and a
-`buzzCount`:
+`buzzCount`, which will keep track of the number of times the timer
+has buzzed:
 
 ```elm
 type alias Model = { timer : Timer.Model
@@ -101,12 +102,11 @@ type alias Model = { timer : Timer.Model
 
 #### Msg
 
-Since the `TaskTimer` is meant to be useful child component, we'll
-have to make some useful messages for whatever parent will be using.
+Since the `TaskTimer` is meant to be a useful child component, we'll
+have to make some useful messages for whatever parent will be using it.
 Let's make a `Reset` message that will reset the `Timer`s clock, and a
-`BuzzMessage` message that will occur whenever the `Timer` buzzes, and
-will send out the `name` and `task` description. We'll also add in the
-`Updater` message:
+`BuzzMessage` that will occur whenever the `Timer` buzzes, sending out
+the `name` and `task` description.
 
 ```elm
 type Msg = Reset
@@ -114,12 +114,15 @@ type Msg = Reset
          | UpdaterMsg (Updater Model Msg)
 ```
 
+`UpdaterMsg` is required for updating the children components.
+
+
 #### Converters
 
 Now it's time to define the `Converter` interfaces for each of the
 children components. The function `converter` takes an updater message
-constructor (`UpdaterMsg` in our case, though we could have named it
-anything), and an `Interface`, which is defined in the `Updater`
+constructor (`UpdaterMsg` in this case, though it could be named
+anything). It also takes an `Interface`, which is defined in the `Updater`
 module as:
 
 ```elm
@@ -130,8 +133,8 @@ type alias Interface pModel pMsg cModel cMsg =
     , react : ( cMsg -> cModel -> pModel -> ( pModel, Cmd pMsg ) ) }
 ```
 
-`pModel` and `pMsg` are the parent's `Model` and `Msg`, while `cModel`
-and `cMsg` are the child component's.
+where `pModel` and `pMsg` are the parent's `Model` and `Msg`, and `cModel`
+and `cMsg` are the child component's `Model` and `Msg`.
 
 The `react` function is given any of the child component's
 messages and the child's model (already updated with that message), as
@@ -167,10 +170,10 @@ text we can just reach directly into their models using
 `model.task.text` or `model.name.text`. The `noReaction` function is defined in
 the `Updater` module and always returns `(model, Cmd.none)`.
 
-Now let's define `timerC` for the timer. The `get` and `set` will be
-similar. This time wewant to react to its messages: whenever we see the `Timer.Buzz`
-message, we'll increment the `buzzCount` and have the `TaskTimer` trigger
-a `BuzzMessage` message:
+Now let's define `timerC` for the timer. The `get` and `set` functions
+will be similar to `taskC` and `nameC`. But this time we want to react
+to its messages: whenever it sees the `Timer.Buzz` message, it will
+increment the `buzzCount` and have the `TaskTimer` trigger a `BuzzMessage` message:
 
 ```elm
 timerC : Converter Msg Timer.Msg
@@ -193,26 +196,26 @@ function, and, as we'll see below, directly to any child components.
 
 #### view
 
-The view function is pretty normal. Everytime we want to display a
-child component's model, we'll pass its model into its `view`
+The view function is pretty normal. Everytime it displays a
+child component's model, it will pass the child's model into the child's `view`
 function. For example, to display the timer, we can call:
 
 ```elm
 Timer.view model.timer
 ```
-This, however, will return an `Html Timer.Msg`, which we need to
-convert to an `Html Msg`. We can do this using `Html.map` and the
-`timerC` converter we defined above:
+This, however, will return an `Html Timer.Msg`, which needs to be
+converted to an `Html Msg`. We can do this using `Html.map` and the
+`timerC` converter defined above:
 
 ```elm
 Html.map timerC <| Timer.view model.timer
 ```
 
-Notice that we manually call `Timer.view`, so if the `Timer` module
+Notice that `Timer.view` is called manually, so if the `Timer` module
 has some other, more advanced `view` function that takes other
-arguments, we could still use that, or we could wrap the `Timer.view`
-in custom `Html` tags with `Timer.Msg` events. Whatever we write, it just
-needs to return an `Html Timer.Msg` before we
+arguments, it could be used instead, or you could wrap the `Timer.view`
+in custom `Html` tags with `Timer.Msg` events. Whatever you write, it just
+needs to return an `Html Timer.Msg` before you
 convert it with `Html.map timerC`.
 
 Here's the complete `view` function with all three child components.
@@ -245,7 +248,7 @@ broadcast.
 `Timer` using Elm's record updating syntax, but that would be tedius
 and sloppy.
 `Timer.Msg` already has a `Stop` message that does what we want. To
-send it to the `timer`, we need to turn `Timer.Stop` into a `Cmd`
+send it to the `timer`, `Timer.Stop` needs to be turned into a `Cmd`
 using `toCmd`, then convert it using `Cmd.map` and the `timerC`
 converter:
 
@@ -292,8 +295,8 @@ The `Timer` component exports a standard `init` function that returns
 
 The `Cmd`s that `Timer.init` returns are because the creator of the
 timer component thought it would be a good idea to have a random
-initial starting value between 1 and 30 seconds, so it calls some
-`Random` tasks right away to generate them. We need to include these
+initial starting value between 1 and 30 seconds, so it calls a
+`Random` task right away to generate them. We need to include these
 `Cmd`s and convert them using `timerC`.
 
 ```elm
@@ -323,13 +326,13 @@ module (demo, source).
 
 ## TaskTimer Cluster
 
-What if we want to have a whole bunch of `TaskTimer`s, like an
+What if you want to have a whole bunch of `TaskTimer`s, like an
 unlimited amount of them that the user can add or delete at will?
 
 I'll show you two ways to do this. First, a tedious way that uses a
 `Dict`, like I'm sure you've done before if you've worked with Elm
 much. Second, I'll show you the `Many` component, which abstracts away
-the boring part and can be used on any other type of component.
+the boring part and can be used to make a collection of any type of component.
 
 ### The Tedious Way
 
@@ -349,9 +352,11 @@ import Component.TaskTimer as TaskTimer
 
 #### model and message
 
-We'll use a `Dict` to store the `TaskTimer`s and give each of them a
-unique id. We'll add `AddTimer` and `DeleteTimer` messages that adds
-or deletes the timers from the `Dict`.
+Inside the model, a `Dict` will store the `TaskTimer`s and give each of them a
+unique id.
+
+For the `Msg`, `AddTimer` and `DeleteTimer` will add
+or delete the timers from the `Dict`.
 
 `newID` will store the next unused id, and will increment every time a
 new timer is added.
@@ -375,7 +380,7 @@ an argument.
 The `TaskTimer` models are stored inside a `Dict`, so we'll have to
 have the converter's `get` and `set` functions reach into the `Dict`.
 The converter will also need to take an `Int` id as an argument to
-know which `TaskTimer` in the `Dict` we want to access.
+know which `TaskTimer` in the `Dict` should be accessed.
 
 ```elm
 timerC : Int -> Converter Msg TaskTimer.Msg
@@ -387,12 +392,12 @@ timerC n = converter
            , react = noReaction }
 ```
 
-Now we can just call `timerC 5` and get a `Converter` for the
+Now we can just call, for example, `timerC 5` and get a `Converter` for the
 `TaskTimer` stored with the id of `5`.
 
 #### init
 
-The `init` is easy because it starts with nothing in the `Dict`:
+The `init` is easy because it starts with an empty `Dict`:
 
 ```elm
 init : (Model, Cmd Msg)
@@ -430,7 +435,7 @@ update msg model =
 
 #### subscriptions
 
-For the subscriptions, we just need to map through the `TaskTimer`s in
+For the subscriptions, just cycle through the `TaskTimer`s in
 the dict, converting each subscription by id:
 
 ```elm
@@ -443,10 +448,11 @@ subscriptions model =
 
 #### view
 
-For the `view`, we will just iterate through a `toList` of the `Dict`,
+For the `view`, you can just iterate through a `toList` of the `Dict`,
 use `TaskTimer.view` on each model and map `timerC` with the `id` to
-convert. We'll also use the `id` to wrap each timer with a delete
-button that calls the `DeleteTimer` message.
+convert to the parent's message. The `deletableTimer` function wraps
+each timer with a delete button that calls the `DeleteTimer` message
+for an `id`.
 
 There's also an "Add Timer" button that just returns the `Addtimer`
 message with `TaskTimer.init` as an argument.
@@ -483,15 +489,292 @@ main =
                  , view = view }
 ```
 
-That's it! Another fully functional component (demo, source).
+That's it! Another fully functional component (demo, source). But do
+you really like juggling objects in a `Dict` like that?
 
 ## TaskTimer Cluster using Many
 
 Using a `Dict` isn't too bad for one collection, but imagine you had a
 page with many different collections of components. Think how bloated
 your code might become from all the calls to `Dict.toList`, and how
-many `AddThis` and `RemoveThat` messages you might have to create!
+many `AddThis` and `RemoveThat` messages you might have to pollute
+your `Msg` with!
 
-Using the `Many` component, we can abstract this `Dict`-handling, and
+Using the `Many` component, you can abstract this `Dict`-handling, and
 more-easily and succinctly handle collections of components.
+
+#### headers
+
+```elm
+module Component.ManyTimerCluster exposing (Msg (..), Model, init, update, view, subscriptions)
+import Html exposing (..)
+import Html.Attributes exposing (..)
+import Html.App as Html
+import Html.Events exposing ( onClick )
+import Updater exposing (converter, Updater, Converter, Interface, toCmd, noReaction)
+
+import Component.TaskTimer as TaskTimer
+import Component.Many as Many
+```
+
+#### Many Msg and Model type aliases
+
+`Many` has polymorphic types for its model and message:
+
+```elm
+type alias Model cModel cMsg = ...
+
+type Msg cModel cMsg = ...
+``
+
+`cModel` and `cMsg` are the msg and model of whatever component will
+be stored in the `Many` component, which, in this case, is a
+`TaskTimer`, so the `Many` model would be `Many.Model TaskTimer.Model
+TaskTimer.Msg`. Type aliases can be used to avoid having to write such
+a long type:
+
+```elm
+type alias TimersModel = Many.Model TaskTimer.Model TaskTimer.Msg
+
+type alias TimersMsg = Many.Msg TaskTimer.Model TaskTimer.Msg
+```
+
+#### Msg and Model
+
+```elm
+type alias Model = { timers : TimersModel }
+
+type Msg = NoOp
+         | UpdaterMsg (Updater Model Msg)
+```
+
+Pretty boring, huh? I just added in `NoOp` for decoration, really.
+
+#### Converter
+
+```elm
+timersC : Converter Msg TimersMsg
+timersC = converter
+           UpdaterMsg
+           { get = Just << .timers
+           , set = (\ cm model -> { model | timers = cm } )
+           , update = Many.update
+           , react = noReaction }
+```
+
+*yawn*... Notice that `update` is `Many.update` and not
+ `TaskTimer.update`.
+
+
+#### init
+
+```elm
+init : (Model, Cmd Msg)
+init = { timers = Many.initModel TaskTimer.update TaskTimer.subscriptions }
+    ! [ ]
+```
+
+`Many.initModel` takes the hosted component's `update` function and the `subscriptions`
+function for the initial argument.
+
+It doesn't actually need to `init` any `TaskTimer`s until they are added using the `Many.Add`
+message (which could be done in the `Cmd Msg` of this init).
+
+#### update
+
+```elm
+update : Msg -> Model -> ( Model, Cmd Msg )
+update msg model =
+  case msg of
+      NoOp -> model ! []
+      UpdaterMsg u -> u model
+```
+
+#### subscriptions
+
+```elm
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Sub.map timersC <| Many.subscriptions model.timers
+```
+
+#### view
+
+Ah! Now for something interesting!
+
+The `Many` module's `Module` generates a few convenience functions
+that make it easy to display the components in its collection. One of
+those functions is called `viewAll`, which you access through the
+model, like `model.timer.viewAll`. It expects a callback function with
+this type signature:
+
+```elm
+( Int -> cModel -> ( Html cMsg -> Html (Msg cModel cMsg) )
+                -> Maybe (Html (Msg cModel cMsg)) )
+```
+
+Don't be intimidated by this, it's actually really simple. The
+callback function that you supply will get these arguments:
+
+* the id of the component
+* the model of the component
+* a conversion function that changes `Html (component message)` to
+`Html (Many message)`.
+
+The `(component message)` is referring, in this case, to a
+`TaskTimer.Msg`, which means that you can display `Html TaskTimer.Msg`
+types, like by calling `TaskTimer.view`. The conversion function is
+then used to transform that into, in this case, `Html (Many
+TaskTimer.Model TaskTimer.Msg)`, or, using the type alias already
+defined, just `Html TimersMsg`.
+
+This allows you to display something for the `TaskTimer`, but also to
+surround it with events that control its place in the `Many`
+component, such as by using the `Many.Delete id` message to delete
+itself.
+
+The callback function returns the `Html` in a `Maybe` so you can
+display `Nothing` if you want to skip displaying certain components.
+
+```elm
+view : Model -> Html Msg
+view model =
+    div []
+        [ Html.map timersC <| viewTimers model.timers ]
+
+viewTimers : TimersModel -> Html TimersMsg
+viewTimers timers =
+    div [ class "timers" ]
+        [ div [ style [("height", "420px")]] <|
+
+              timers.viewAll
+              (\ id timer conv -> Just <|
+                   div [ style [ ("width", "215px")
+                               , ("float", "left")
+                               , ("height", "320px") ] ]
+                   [ conv <| TaskTimer.view timer
+                   , button [ onClick <| Many.Delete id ] [ text "Delete" ] ])
+
+        , div [] [ button [ onClick <| Many.Add TaskTimer.init ] [ text "Add Timer" ]]]
+```
+
+#### main
+
+```elm
+main : Program Never
+main =
+    Html.program { init = init
+                 , update = update
+                 , subscriptions = subscriptions
+                 , view = view }
+```
+
+Here's the complete source and a demo.
+
+You can see how much easier it is to reason about using `Many` and how
+much better organized it is than throwing in your own `Dict` solution
+for every component type.
+
+## A Super Timer Application
+
+I won't make you suffer through a complete walkthrough of my
+SuperTimer application. By now you should be able to look at the
+source code and understand it, except for some of the message passing
+parts that use `Many`, which I'll explain.
+
+#### SuperTimer!
+
+The `SuperTimer` is just like the Timer Clusters we looked at in the
+last two examples, except it also connects to the `SuperBuzzer` module
+to help alert the user of the `SuperTimer` when any timer is buzzing.
+Also, a list of actively buzzing tasks will be displayed next to the
+SuperBuzzer. When the giant pulsating red SuperBuzzer is clicked, a
+message will get passed back to stop all the buzzing timers.
+
+#### Reading messages through a Many
+
+The `SuperTimer` uses the same `TaskTimer` in a `Many` setup, except
+it needs to react to any `TaskTimer.BuzzMessage` messages so it can
+trigger the `SuperBuzzer` and store the task name and description in
+the collection of active tasks.
+
+Here's the `timersC` conversion function with a `react` that does just
+that:
+
+```elm
+timersC : Converter Msg TimersMsg
+timersC = converter
+          UpdaterMsg
+          { get = Just << .timers
+          , set = \ cm model -> { model | timers = cm }
+          , update = Many.update
+          , react = \ mMsg _ model ->
+                         case mMsg of
+                             Many.From id tMsg _ ->
+                                 case tMsg of
+                                     TaskTimer.BuzzMessage name description ->
+                                         model
+                                         ! [ toCmd <| Buzz id name description ]
+                                     _ -> model ! []
+                             _ -> model ! [] }
+```
+
+The message type, `Many.From` passes down the id, message, and model of
+the component.
+
+#### Sending messages through a Many
+
+What if you want to send a message to a component stored inside a
+`Many`? For that, use the message, `Many.SendTo`, which takes the
+component id and a components message.
+
+In the `SuperTimer` app, all the id's for the `TaskTimer`s that have
+buzzed, and their task names and descriptions, are stored in the
+`buzzedTimers` dictionary. Below is how to send the `TaskTimer.Reset`
+message through the `Many` component:
+
+```elm
+update msg model =
+   case msg of
+      ...
+      UnBuzz -> { model | buzzedTimers = Dict.empty }
+                ! (List.map
+                       (\ id -> Cmd.map timersC <| toCmd <|
+                            Many.SendTo id TaskTimer.Reset )
+                            (Dict.keys model.buzzedTimers))
+```
+
+#### Demo and Source
+
+See a demo of the SuperTimer, or view the source code.
+
+
+# Component Conventions
+
+In my opinion, this library should make using reusable components in
+Elm much more popular, and wouldn't it be great if everybody was
+contributing a bunch of useful components, and wouldn't it be nice if
+there were demos of them all and they had nice public `Msg`
+interfaces?
+
+### Component Module Names
+
+It seems like we should name anything that is just meant to be a
+component with a module name like `Component.SuperTimer`. That way,
+it's obvious when you're importing components and when you're
+importing libraries that provide more general functionality.
+
+### Component Files
+
+If you want to spread out a component over multiple files, please
+expose one main file, `Component.Xxxxx`, that exposes the main useful things
+like `Msg`, `Model`, `update`, `subscriptions`, etc, so that it's easy
+to import.
+
+### Component Msg
+
+Limit which parts of the message get exposed and document which
+messages are useful for output or for component control. Try to make
+it difficult for people to wire up an infinite `Cmd` loop between your
+component and their `react` function.
 
