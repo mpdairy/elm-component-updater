@@ -1,8 +1,8 @@
 {
-    "version": "0.0.1",
+    "version": "1.0.0",
     "summary": "Easily interface and organize nested components.",
     "repository": "https://github.com/mpdairy/elm-component-updater.git",
-    "license": "UNLICENSED",
+    "license": "BSD3",
     "source-directories": [
       "src",
       "examples"
