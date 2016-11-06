@@ -1,3 +1,5 @@
+(http://package.elm-lang.org/packages/mpdairy/elm-component-updater/latest)
+
 # Introduction
 
 This library provides an easy and powerful way to use nested children
