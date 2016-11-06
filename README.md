@@ -6,8 +6,7 @@ components can easily communicate with children components and react to
 any changes that might occur in them.
 
 You can nest components to any depth and the components are just
-regular Elm programs, the the usual 
-Children components are just regular Elm programs with the usual `Msg`, `Model`, `update`,
+regular Elm programs, with the usual `Msg`, `Model`, `update`,
 `view`, `subscription`, that can be tested individually, and can be
 nested to any depth.
 
@@ -787,4 +786,3 @@ Limit which parts of the message get exposed and document which
 messages are useful for output or for component control. Try to make
 it difficult for people to wire up an infinite `Cmd` loop between your
 component and their `react` function.
-
