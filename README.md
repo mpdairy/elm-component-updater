@@ -7,10 +7,9 @@ any changes that might occur in them.
 
 You can nest components to any depth and the components are just
 regular Elm programs, with the usual `Msg`, `Model`, `update`,
-`view`, `subscription`, that can be tested individually, and can be
-nested to any depth.
+`view`, `subscription`, that can be compiled and tested individually.
 
-The only boilerplate you need to add to the parent, in order for it
+The only boilerplate you need to add to a parent, in order for it
 to handle any number or variety of components, is an extra message
 constructor in your `Msg` that takes an `Updater`:
 
