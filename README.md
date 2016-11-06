@@ -530,8 +530,8 @@ type Msg cModel cMsg = ...
 `cModel` and `cMsg` are the msg and model of whatever component will
 be stored in the `Many` component, which, in this case, is a
 `TaskTimer`, so the `Many` model would be `Many.Model TaskTimer.Model
-TaskTimer.Msg`. Type aliases can be used to avoid having to write such
-a long type:
+TaskTimer.Msg`. We'll use type aliases to avoid having to write such
+long types:
 
 ```elm
 type alias TimersModel = Many.Model TaskTimer.Model TaskTimer.Msg
@@ -562,7 +562,7 @@ timersC = converter
            , react = noReaction }
 ```
 
-*yawn*... Notice that `update` is `Many.update` and not
+Notice that `update` is `Many.update` and not
  `TaskTimer.update`.
 
 
@@ -574,7 +574,7 @@ init = { timers = Many.initModel TaskTimer.update TaskTimer.subscriptions }
     ! [ ]
 ```
 
-`Many.initModel` takes the hosted component's `update` function and the `subscriptions`
+`Many.initModel` takes the hosted component type's `update` function and the `subscriptions`
 function for the initial argument.
 
 It doesn't actually need to `init` any `TaskTimer`s until they are added using the `Many.Add`
@@ -631,7 +631,7 @@ defined, just `Html TimersMsg`.
 This allows you to display something for the `TaskTimer`, but also to
 surround it with events that control its place in the `Many`
 component, such as by using the `Many.Delete id` message to delete
-itself.
+it.
 
 The callback function returns the `Html` in a `Maybe` so you can
 display `Nothing` if you want to skip displaying certain components.
@@ -726,7 +726,7 @@ the component.
 
 What if you want to send a message to a component stored inside a
 `Many`? For that, use the message, `Many.SendTo`, which takes the
-component id and a components message.
+component id and a component's message.
 
 In the `SuperTimer` app, all the id's for the `TaskTimer`s that have
 buzzed, and their task names and descriptions, are stored in the
@@ -751,11 +751,20 @@ See a demo of the SuperTimer, or view the source code.
 
 # Component Conventions
 
-In my opinion, this library should make using reusable components in
-Elm much more popular, and wouldn't it be great if everybody was
-contributing a bunch of useful components, and wouldn't it be nice if
-there were demos of them all and they had nice public `Msg`
-interfaces?
+In my opinion, this `Updater` library should make using reusable components in
+Elm much more popular. Wouldn't it be great if everybody was
+contributing a bunch of useful components? Think how fast you could
+build up really complicated apps!
+
+And the components aren't limited to just GUI widgets. You could make
+headless components that provide a useful `Msg` API to interact with
+other web API's, like Google Maps, Facebook, or reThink DB. Basically,
+anything reusable thing that needs its own state should be a component.
+
+By splitting your program up into many component
+modules, not only do you get great reusability, but it's easier
+to keep your main app's `Msg` small and understandable. It's also
+easier to test individual components.
 
 ### Component Module Names
 
