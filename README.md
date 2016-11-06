@@ -767,10 +767,11 @@ modules, not only do you get great reusability, but it's easier
 to keep your main app's `Msg` small and understandable. It's also
 easier to test individual components.
 
-### Component Module Names
+### Component.Xxxxxx Module Names
 
 It seems like we should name anything that is just meant to be a
-component with a module name like `Component.SuperTimer`. That way,
+component with a module name like `Component.SuperTimer`, with a
+`Component.` in front. That way
 it's obvious when you're importing components and when you're
 importing libraries that provide more general functionality.
 
