@@ -3,13 +3,12 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.App as Html
 import Html.Events exposing ( onClick )
---import Time exposing (Time, every, second)
---import Random
 import Dict exposing (Dict)
-import Component.TaskTimer as TaskTimer
---import Component.SuperBuzzer as Buzzer
-
 import Updater exposing (converter, Updater, Converter, Interface, toCmd, noReaction)
+
+import Component.TaskTimer as TaskTimer
+
+
 
 
 type alias Model = { timers : Dict Int TaskTimer.Model
@@ -57,8 +56,6 @@ subscriptions model =
                     (Dict.toList model.timers)
 
 -- VIEW
--- Html is defined as: elem [ attribs ][ children ]
--- CSS can be applied via class names or inline style attrib
 view : Model -> Html Msg
 view model =
   div [ ]

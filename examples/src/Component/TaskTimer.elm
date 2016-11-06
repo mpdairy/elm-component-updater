@@ -2,9 +2,6 @@ module Component.TaskTimer exposing (Msg (..), Model, init, update, view, subscr
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.App as Html
---import Html.Events exposing ( onClick )
---import Time exposing (Time, every, second)
---import Random
 import Component.Timer as Timer
 import Component.EditableLabel as Label
 
@@ -54,13 +51,13 @@ timerC = converter
 --
 
 init : (Model, Cmd Msg)
-init = let ( tmodel, tmsg ) = Timer.init
+init = let ( tmodel, tcmd ) = Timer.init
        in
            { timer = tmodel
            , task = Label.initModel "Enter a task description here."
            , name = Label.initModel "Timer Name"
            , buzzCount = 0 }
-    ! [ Cmd.map timerC tmsg ]
+    ! [ Cmd.map timerC tcmd ]
 
 -- UPDATE
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -76,11 +73,9 @@ update msg model =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.batch [ Sub.map timerC <| Timer.subscriptions model.timer ]
+    Sub.map timerC <| Timer.subscriptions model.timer
 
 -- VIEW
--- Html is defined as: elem [ attribs ][ children ]
--- CSS can be applied via class names or inline style attrib
 view : Model -> Html Msg
 view model =
   div [ style [ ("border", "1px solid #aaa"), ("margin", "10px")

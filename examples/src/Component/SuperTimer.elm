@@ -34,8 +34,8 @@ timersC = converter
           { get = Just << .timers
           , set = \ cm model -> { model | timers = cm }
           , update = Many.update
-          , react = \ msg _ model ->
-                         case msg of
+          , react = \ mMsg _ model ->
+                         case mMsg of
                              Many.From id tMsg _ ->
                                  case tMsg of
                                      TaskTimer.BuzzMessage name description ->
@@ -92,7 +92,7 @@ view model =
         [ Just <| Html.map timersC <| viewTimers model.timers
         , when model.buzzer.buzzing <|
             div []
-                [ text "Click to clear buzzer." 
+                [ text "Click to clear buzzer."
                 , div [style [("height", "400px")]]
                     [ div [ style [("width", "500px"), ("float", "left")]]
                           [ Html.map buzzerC <| Buzzer.view model.buzzer ]
