@@ -411,7 +411,7 @@ init = { timers = Dict.empty
 For the `update` function, `DeleteTimer id` just needs to remove the
 timer from the `Dict`.
 
-For `AddTimer`, it just needs to:
+For `AddTimer`, it needs to:
 
 * add the new timer's init model to the `Dict`
 * increment the `newID` record
@@ -602,7 +602,7 @@ subscriptions model =
 
 Ah! Now for something interesting!
 
-The `Many` module's `Module` generates a few convenience functions
+The `Many` module's model generates a few convenience functions
 that make it easy to display the components in its collection. One of
 those functions is called `viewAll`, which you access through the
 model, like `model.timer.viewAll`. It expects a callback function with
