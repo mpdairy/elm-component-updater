@@ -45,7 +45,7 @@ component's message type. Just `map` the converter onto the child
 message and `Updater` will take care of the rest.
 
 This library makes using nested components easy and efficient.
-It should encourage the creation and sharing of re-usable, decoupled,
+It should encourage the creation and sharing of re-usable, decoupled
 components.
 It also allows for some really nice abstractions, like the `Many`
 component (shown as in examples far below), which lets you easily
@@ -65,7 +65,8 @@ complicated components:
 * `SuperBuzzer` is just a big, animated "buzzer" that really grabs
 your attention (demo, source)
 
-The modules, and the modules to come, are, admittedly, hideous in appearance.
+These components and the examples to follow are only styled enough to
+make them usable for the purpose of demonstration.
 
 ## TaskTimer
 
@@ -126,10 +127,10 @@ module as:
 
 ```elm
 type alias Interface pModel pMsg cModel cMsg =
-    { get : ( pModel -> Maybe cModel )
-    , set : ( cModel -> pModel -> pModel )
+    { get    : ( pModel -> Maybe cModel )
+    , set    : ( cModel -> pModel -> pModel )
     , update : ( cMsg -> cModel -> ( cModel, Cmd cMsg ) )
-    , react : ( cMsg -> cModel -> pModel -> ( pModel, Cmd pMsg ) ) }
+    , react  : ( cMsg -> cModel -> pModel -> ( pModel, Cmd pMsg ) ) }
 ```
 
 where `pModel` and `pMsg` are the parent's `Model` and `Msg`, and `cModel`
