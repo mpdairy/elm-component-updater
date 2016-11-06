@@ -777,7 +777,7 @@ importing libraries that provide more general functionality.
 
 ### Component Files
 
-If you want to spread out a component over multiple files, please
+Even if you want to spread out a component over multiple files, please
 expose one main file, `Component.Xxxxx`, that exposes the main useful things
 like `Msg`, `Model`, `update`, `subscriptions`, etc, so that it's easy
 to import.
