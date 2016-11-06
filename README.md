@@ -11,7 +11,8 @@ regular Elm programs, with the usual `Msg`, `Model`, `update`,
 
 The only boilerplate you need to add to a parent, in order for it
 to handle any number or variety of components, is an extra message
-constructor in your `Msg` that takes an `Updater`:
+constructor in your `Msg` that takes an `Updater` of the parent's
+`Model` and `Msg` type:
 
 ```elm
 type Msg = ...
@@ -36,7 +37,7 @@ you just need to declare an `Interface` with the following information:
 * `get` - how to get the child component's model from the parent model.
 * `set` - how to update the child component's model within the parent model.
 * `update` - the child component's standard `update` function.
-* `react` - (optional) lets the parent react to any of the child's messages.
+* `react` - (optional) lets the parent specially react to any of the child's messages.
 
 Once defined, a `Converter` can be used with `Html.map`, `Sub.map`, or
 `Cmd.map` to convert any `Html`, `Sub`, or `Cmd` containing the child
