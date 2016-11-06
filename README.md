@@ -525,7 +525,7 @@ import Component.Many as Many
 type alias Model cModel cMsg = ...
 
 type Msg cModel cMsg = ...
-``
+```
 
 `cModel` and `cMsg` are the msg and model of whatever component will
 be stored in the `Many` component, which, in this case, is a
