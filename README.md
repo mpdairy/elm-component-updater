@@ -42,7 +42,8 @@ you just need to declare an `Interface` with the following information:
 Once defined, a `Converter` can be used with `Html.map`, `Sub.map`, or
 `Cmd.map` to convert any `Html`, `Sub`, or `Cmd` containing the child
 component's message type. Just `map` the converter onto the child
-message and `Updater` will take care of the rest.
+message and `Updater` will take care of the rest (and if Elm had
+typeclasses, you wouldn't even have to specify the `map`).
 
 This library makes using nested components easy and efficient.
 It should encourage the creation and sharing of re-usable, decoupled
@@ -59,11 +60,13 @@ There are three stock components that we'll use to build up more
 complicated components:
 
 * `EditableLabel` is a label that can be changed with an edit button
-(demo, source)
+([demo](http://otherway.org/updater/EditableLabel.html), [source](https://github.com/mpdairy/elm-component-updater/blob/master/examples/src/Component/EditableLabel.elm))
 * `Timer` is a standard kitchen timer that counts down from whatever
-  you set and flashes when it reaches zero (demo, source)
+you set and flashes when it reaches zero
+([demo](http://otherway.org/updater/Timer.html), [source](https://github.com/mpdairy/elm-component-updater/blob/master/examples/src/Component/Timer.elm))
 * `SuperBuzzer` is just a big, animated "buzzer" that really grabs
-your attention (demo, source)
+your attention. When you click on it, it stops.
+([demo](http://otherway.org/updater/SuperBuzzer.html), [source](https://github.com/mpdairy/elm-component-updater/blob/master/examples/src/Component/SuperBuzzer.elm))
 
 These components and the examples to follow are only styled enough to
 make them usable for the purpose of demonstration.
