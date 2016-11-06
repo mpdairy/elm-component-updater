@@ -32,7 +32,7 @@ objectC objUpdate n =
         , set = (\ object model ->
                      let newObjects = Dict.insert n object model.objects in
                      { model | objects = newObjects
-                     , viewAll = mapper objUpdate newObjects} )
+                     , viewAll = mapper objUpdate newObjects } )
         , update = objUpdate
         , react = (\ cMsg cModel model -> model ! [ toCmd <| From n cMsg cModel ] ) }
 --
@@ -48,6 +48,7 @@ mapper objUpdate objects f =
         Dict.toList objects
 
 --
+
 initModel : ( cMsg -> cModel -> ( cModel, Cmd cMsg ) )
           -> ( cModel -> Sub cMsg )
           -> Model cModel cMsg
