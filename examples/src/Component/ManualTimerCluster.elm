@@ -8,9 +8,6 @@ import Updater exposing (converter, Updater, Converter, Interface, toCmd, noReac
 
 import Component.TaskTimer as TaskTimer
 
-
-
-
 type alias Model = { timers : Dict Int TaskTimer.Model
                    , newID : Int }
 

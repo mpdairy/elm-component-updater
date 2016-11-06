@@ -45,7 +45,7 @@ view model =
 -- APP
 main : Program Never
 main =
-    Html.program { init = ( initModel "", Cmd.none )
+    Html.program { init = ( initModel "Some Text", Cmd.none )
                  , update = update
                  , subscriptions = always Sub.none
                  , view = view }

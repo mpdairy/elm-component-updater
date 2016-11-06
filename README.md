@@ -325,7 +325,7 @@ main =
 ```
 
 That's it! Now you can compile and test `TaskTimer` as an individual
-module (demo, source).
+module ([demo](http://otherway.org/updater/TaskTimer.html), [source](https://github.com/mpdairy/elm-component-updater/blob/master/examples/src/Component/TaskTimer.elm)).
 
 ## TaskTimer Cluster
 
@@ -492,7 +492,7 @@ main =
                  , view = view }
 ```
 
-That's it! Another fully functional component (demo, source). But do
+That's it! Another fully functional component ([demo](http://otherway.org/updater/ManualTimerCluster.html), [source](https://github.com/mpdairy/elm-component-updater/blob/master/examples/src/Component/ManualTimerCluster.elm)). But do
 you really like juggling objects in a `Dict` like that?
 
 ## TaskTimer Cluster using Many
@@ -672,7 +672,7 @@ main =
                  , view = view }
 ```
 
-Here's the complete source and a demo.
+Here's the complete [source](https://github.com/mpdairy/elm-component-updater/blob/master/examples/src/Component/ManyTimerCluster.elm) and a [demo](http://otherway.org/updater/ManyTimerCluster.html).
 
 You can see how much easier it is to reason about using `Many` and how
 much better organized it is than throwing in your own `Dict` solution
@@ -749,7 +749,9 @@ update msg model =
 
 #### Demo and Source
 
-See a demo of the SuperTimer, or view the source code.
+See a
+[demo of the SuperTimer](http://otherway.org/updater/SuperTimer.html),
+and here's the [source code](https://github.com/mpdairy/elm-component-updater/blob/master/examples/src/Component/SuperTimer.elm).
 
 
 # Component Conventions
@@ -761,14 +763,15 @@ build up really complicated apps!
 
 And the components aren't limited to just GUI widgets. You could make
 headless components that provide a useful `Msg` API to interact with
-other web API's, like Google Maps, Facebook, or reThink DB. Basically,
-anything that needs to manage its own state should be a component,
+other web APIs or databases. Basically,
+anything that needs to manage its own internal state should be a component,
 especially if you want to use it more than once.
 
 By splitting your program up into many component
 modules, not only do you get great reusability, but it's easier
-to keep your main app's `Msg` small and understandable. It's also
-easier to test individual components.
+to keep your main app's--and each component's--`Msg` small and understandable. It's also
+easier to test components individually rather than as part of a
+behemoth main app.
 
 ### Component.Xxxxxx Module Names
 
