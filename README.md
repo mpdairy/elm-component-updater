@@ -759,7 +759,8 @@ build up really complicated apps!
 And the components aren't limited to just GUI widgets. You could make
 headless components that provide a useful `Msg` API to interact with
 other web API's, like Google Maps, Facebook, or reThink DB. Basically,
-anything reusable thing that needs its own state should be a component.
+anything that needs to manage its own state should be a component,
+especially if you want to use it more than once.
 
 By splitting your program up into many component
 modules, not only do you get great reusability, but it's easier
