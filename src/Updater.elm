@@ -151,15 +151,26 @@ makeUpdater : UpdaterMsg pModel pMsg
             -> cMsg
             -> Updater pModel pMsg
 makeUpdater cons i cMsg =
-    (\ model ->
-         Maybe.withDefault ( model, Cmd.none ) <|
-         (i.get model) `Maybe.andThen`
-         (\ gotcModel -> Just <|
-              let (cModel, cCmd) = i.update cMsg gotcModel
-                  (rModel, rCmd) = i.react cMsg cModel (i.set cModel model)
-              in
-                  rModel ! [ Cmd.map (\ m -> cons (makeUpdater cons i m)) cCmd
-                           , rCmd]))
+    (\model ->
+        Maybe.andThen
+            (i.get model)
+            (\gotcModel ->
+                Just <|
+                    let
+                        ( cModel, cCmd ) =
+                            i.update cMsg gotcModel
+
+                        ( rModel, rCmd ) =
+                            i.react cMsg cModel (i.set cModel model)
+                    in
+                        rModel
+                            ! [ Cmd.map (\m -> cons (makeUpdater cons i m)) cCmd
+                              , rCmd
+                              ]
+            )
+            |> Maybe.withDefault ( model, Cmd.none )
+    )
+
 --
 
 {-| use in an `Interface` for `react` when you don't want to react to any of the child's messages. -}
