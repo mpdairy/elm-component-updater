@@ -2,7 +2,7 @@ module Component.Timer exposing (Msg (..), Model, State, init, update, view, sub
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.App as Html
+import Html as Html
 import Html.Events exposing ( onClick )
 import Time exposing (Time, every, second)
 import Random
@@ -95,7 +95,7 @@ isBuzzRed : Model -> Bool
 isBuzzRed model = model.state == Buzzing && model.buzzRed
 
 -- APP
-main : Program Never
+main : Program Never Model Msg
 main =
     Html.program { init = init
                  , update = update

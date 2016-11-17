@@ -1,7 +1,7 @@
 module Component.ManyTimerCluster exposing (Msg (..), Model, init, update, view, subscriptions)
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.App as Html
+import Html as Html
 import Html.Events exposing ( onClick )
 import Updater exposing (converter, Updater, Converter, Interface, toCmd, noReaction)
 
@@ -68,7 +68,7 @@ viewTimers timers =
         , div [] [ button [ onClick <| Many.Add TaskTimer.init ] [ text "Add Timer" ]]]
 
 -- APP
-main : Program Never
+main : Program Never Model Msg
 main =
     Html.program { init = init
                  , update = update

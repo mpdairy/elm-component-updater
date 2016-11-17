@@ -2,7 +2,7 @@ module Component.SuperBuzzer exposing (Msg (..), Model, initModel, update, view,
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.App as Html
+import Html as Html
 import Html.Events exposing ( onClick )
 import Time exposing (Time, every, millisecond, second)
 import Updater exposing (toCmd)
@@ -76,7 +76,7 @@ subscriptions model =
         Sub.none
 
 -- APP
-main : Program Never
+main : Program Never Model Msg
 main =
     Html.program { init = ( initModel 300 200 (second * 0.5), toCmd Start )
                  , update = update

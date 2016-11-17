@@ -1,7 +1,7 @@
 module Component.ManualTimerCluster exposing (Msg (..), Model, init, update, view)
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.App as Html
+import Html as Html
 import Html.Events exposing ( onClick )
 import Dict exposing (Dict)
 import Updater exposing (converter, Updater, Converter, Interface, toCmd, noReaction)
@@ -73,7 +73,7 @@ deletableTimer id html = div [ style [ ("width", "215px")
                ]
 
 -- APP
-main : Program Never
+main : Program Never Model Msg
 main =
     Html.program { init = init
                  , update = update

@@ -1,7 +1,7 @@
 module Component.Many exposing (Msg (Add, Delete, From, SendTo), Model, initModel, update, subscriptions)
 
 import Html exposing (Html)
-import Html.App as Html
+import Html as Html
 import Dict exposing (Dict)
 import List
 

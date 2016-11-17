@@ -1,7 +1,7 @@
 module Component.TaskTimer exposing (Msg (..), Model, init, update, view, subscriptions)
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.App as Html
+import Html as Html
 import Component.Timer as Timer
 import Component.EditableLabel as Label
 
@@ -91,7 +91,7 @@ view model =
       ]
 
 -- APP
-main : Program Never
+main : Program Never Model Msg
 main =
     Html.program { init = init
                  , update = update

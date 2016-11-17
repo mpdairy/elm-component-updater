@@ -2,7 +2,7 @@ module Component.EditableLabel exposing (Msg (..), Model, initModel, update, vie
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.App as Html
+import Html as Html
 import Html.Events exposing ( onClick, onInput )
 
 type Msg = Input String
@@ -43,7 +43,7 @@ view model =
             , button [ onClick Edit, class "edit-button" ] [ text "Edit" ] ]
 
 -- APP
-main : Program Never
+main : Program Never Model Msg
 main =
     Html.program { init = ( initModel "Some Text", Cmd.none )
                  , update = update
